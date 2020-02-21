@@ -59,7 +59,7 @@ class Payment
    }
    public function route($name, $params)
    {
-       return $name; // ya change hua hai
+       return $name; 
    }
 }
 #trabva da se izpolzva ot paypal kato url za plashtane
