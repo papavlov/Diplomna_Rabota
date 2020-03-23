@@ -1,0 +1,56 @@
+/*
+TEMPLATE NAME: Cart
+*/
+if($_POST['wppp_product_id']) :
+    $product_id = $_POST['wppp_product_id'];
+    $qty = $_POST['wppp_qty'];
+    $action = $_POST['wppp_action'];
+    switch($action) {
+        case "add" :
+            $_SESSION['cart'][$product_id] = $_SESSION['cart'][$product_id] + $qty;
+        break;
+        case "empty" :
+            unset($_SESSION['cart']);
+        break;
+        case "remove" :
+            unset($_SESSION['cart'][$product_id]);
+        break;
+    }
+endif;
+
+foreach($_SESSION['cart'] as $product => $qty) :
+    $row = get_post($product);
+    echo $row->post_name
+    echo $row->post_title;
+    echo get_post_meta($product, 'product_info_price', true);
+    echo $qty;
+    echo number_format(get_post_meta($product, 'product_info_price', true) * $qty, 2);
+endforeach;
+<form action="" method="post">
+    <input type="hidden" name="wppp_product_id" value="<?php echo $product; ?>" />
+    <input type="hidden" name="wppp_action" value="remove" />
+    <input type="submit" value="Remove" />
+</form>
+<form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post" class="standard-form">
+    <?php $i = 1; ?>
+    <?php foreach($_SESSION['basket'] as $product => $qty) : ?>
+        <?php $row = get_post($product); ?>
+            <input type="hidden" name="item_name_<?php echo $i; ?>" value="<?php echo $row->post_title; ?>" />
+            <input type="hidden" name="quantity_<?php echo $i; ?>" value="<?php echo $qty; ?>" />
+            <input type="hidden" name="amount_<?php echo $i; ?>" value="<?php echo get_post_meta($product, 'product_info_price', true); ?>" />
+        <?php $i++; ?>
+    <?php endforeach; ?>
+
+    <input type="hidden" name="cmd" value="_cart" />
+    <input type="hidden" name="upload" value="1" />
+    <input type="hidden" name="business" value="<?php echo get_otion('admin_email'); ?>" />
+
+    <input type="hidden" name="currency_code" value="GBP" />
+    <input type="hidden" name="lc" value="UK" />
+    <input type="hidden" name="rm" value="2" />
+    <input type="hidden" name="return" value="<?php echo bloginfo('home'); ?>/thankyou" />
+    <input type="hidden" name="cancel_return" value="<?php echo bloginfo('home'); ?>/cart" />
+    <input type="hidden" name="notify_url" value="<?php bloginfo('stylesheet_directory'); ?>/ipn" />
+
+    <input type="submit" class="submit-button" value="Proceed to PayPal" />
+</form>
