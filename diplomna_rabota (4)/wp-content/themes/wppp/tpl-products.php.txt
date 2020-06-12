@@ -1,0 +1,10 @@
+// Template name: Products
+$products = new WP_Query(array('post_type' => 'product'));
+while($products->have_posts()) : $products->the_post();
+    the_title();
+    echo '<p><strong>Price: </strong>';
+    echo get_post_meta($post->ID, 'product_info_price', true);
+    echo '</p>';
+    the_post_thumbnail('product');
+    the_excerpt();
+endwhile;

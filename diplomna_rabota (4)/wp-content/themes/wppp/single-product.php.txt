@@ -1,0 +1,12 @@
+the_post();
+the_post_thumbnail('product');
+the_title();
+echo get_post_meta($post->ID, 'product_info_price', true);
+the_content();
+<form action="<?php bloginfo('home'); ?>/cart" method="post">
+    <label>QTY:</label>
+    <input type="text" name="wppp_qty" value="1" />
+    <input type="hidden" name="wppp_product_id" value="<?php echo $post->ID; ?>" />
+    <input type="hidden" name="wppp_action" value="add" />
+    <input type="submit" value="Add to cart" />
+</form>

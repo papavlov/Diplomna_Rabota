@@ -1,0 +1,16 @@
+include('jw_custom_posts.php');
+$product = new JW_Post_type('Product', array(
+    'supports' => array('title', 'editor', 'excerpt', 'thumbnail', 'comments')
+));
+$product->add_meta_box('Product info', array(
+    'Price' => 'text'
+));
+include('jw_custom_posts.php');
+
+$product = new JW_Post_type('Product', array(
+    'supports' => array('title', 'editor', 'excerpt', 'thumbnail', 'comments')
+));
+
+$product->add_meta_box('Product info', array(
+    'Price' => 'text'
+));
